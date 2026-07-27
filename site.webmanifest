@@ -1,0 +1,11 @@
+{
+  "name": "อุ่นใจไอที",
+  "short_name": "อุ่นใจไอที",
+  "icons": [
+    { "src": "android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#14263B",
+  "background_color": "#EFF3F1",
+  "display": "standalone"
+}
