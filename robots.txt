@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.unjaiit.com/sitemap.xml
+Sitemap: https://unjaiit.com/sitemap.xml
 
 User-agent: GPTBot
 Allow: /
