@@ -2,3 +2,15 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.unjaiit.com/sitemap.xml
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
