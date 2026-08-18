@@ -14,3 +14,4 @@ Allow: /
 
 User-agent: PerplexityBot
 Allow: /
+Allow: /llms.txt
