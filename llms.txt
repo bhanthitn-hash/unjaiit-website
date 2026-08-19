@@ -1,28 +1,3 @@
-# llms.txt for unjaiit.com
-# กำหนดสิทธิ์การเข้าถึงเนื้อหา
-Allow: /
-
-# ระบุ sitemap เพื่อให้ AI และ Search Engine เข้าใจโครงสร้างเว็บไซต์
-Sitemap: https://unjaiit.com/sitemap.xml
-
-# ระบุหมวดหมู่เนื้อหาสำคัญ
-Content-Type: article, blog, product, faq
-
-# กำหนดภาษาหลักของเว็บไซต์
-Language: th
-
-# ระบุข้อมูลผู้เขียนและองค์กร
-Author: ทีมงาน Unjai IT
-Organization: Unjai IT 
-
-# ระบุไฟล์ structured data ที่ใช้
-Structured-Data: JSON-LD, Schema.org
-
-# กำหนดการเข้าถึงสำหรับ AI Search
-AI-Crawl: allow
-AI-Summary: allow
-AI-Citation: allow
-
 # อุ่นใจไอที (Unjai IT)
 
 > อุ่นใจไอที ให้บริการซ่อม ติดตั้ง และดูแลระบบไอทีครบวงจร ทั้งฮาร์ดแวร์ ซอฟต์แวร์ เครือข่าย เซิร์ฟเวอร์ กล้องวงจรปิด (CCTV) เว็บไซต์ และโปรแกรม ให้บริการถึงบ้านและสำนักงาน
