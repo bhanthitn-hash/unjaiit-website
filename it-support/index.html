@@ -149,6 +149,15 @@
   .field-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   @media (max-width:640px){ .field-row{grid-template-columns:1fr;} }
   .quote-note{font-size:0.86rem; color:var(--ink-soft); margin:14px 0 0;}
+  /* กล่องผลลัพธ์หลังกดส่ง */
+  .quote-out{margin-top:26px; border-top:1px solid var(--line); padding-top:24px;}
+  .quote-out h3{font-size:1.1rem; margin:0 0 6px;}
+  .quote-out .sub{font-size:0.92rem; color:var(--ink-soft); margin:0 0 16px;}
+  .quote-out textarea{
+    width:100%; min-height:150px; font-family:var(--font-body); font-size:0.95rem; line-height:1.6;
+    padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:var(--paper); color:var(--ink);
+  }
+  .copied{display:inline-flex; align-items:center; gap:7px; font-size:0.88rem; color:var(--teal); font-weight:600; margin-top:10px;}
 </style>
 </head>
 <body>
@@ -353,16 +362,57 @@
             </select>
           </div>
         </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="q-contact">ชื่อผู้ติดต่อ</label>
+            <input type="text" id="q-contact" name="contact" autocomplete="name" placeholder="เช่น คุณสมชาย">
+          </div>
+          <div class="field">
+            <label for="q-phone">เบอร์ติดต่อกลับ</label>
+            <input type="tel" id="q-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="08X-XXX-XXXX">
+          </div>
+        </div>
+        <div class="field">
+          <label for="q-email">อีเมล (ถ้าต้องการให้ส่งใบเสนอราคาทางอีเมล)</label>
+          <input type="email" id="q-email" name="email" autocomplete="email" placeholder="name@company.co.th">
+        </div>
         <div class="field">
           <label for="q-note">รายละเอียดเพิ่มเติม (ไม่บังคับ)</label>
           <textarea id="q-note" name="note" placeholder="เช่น มีเซิร์ฟเวอร์ 1 ตัว กล้องวงจรปิด 16 ตัว ต้องการให้เข้าดูแลเดือนละ 2 ครั้ง"></textarea>
         </div>
+        <!-- กับดักบอท ซ่อนจากคนจริงทั้งทางสายตาและ screen reader -->
+        <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
+          <label for="q-website">อย่ากรอกช่องนี้</label>
+          <input type="text" id="q-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="hero-ctas" style="margin-bottom:0;">
-          <button type="submit" class="btn btn-amber">ส่งข้อมูลทางไลน์</button>
+          <button type="submit" class="btn btn-amber" id="quoteSubmit">ส่งคำขอใบเสนอราคา</button>
           <a href="tel:0828295758" class="btn btn-outline" data-cta="quote">โทร 082-829-5758</a>
         </div>
-        <p class="quote-note">เมื่อกดส่ง ระบบจะเปิดแชทไลน์พร้อมข้อความที่กรอกไว้ให้ คุณกดส่งในไลน์อีกครั้งเพื่อยืนยัน ข้อมูลไม่ถูกเก็บไว้บนเว็บไซต์นี้</p>
+        <p class="quote-note">เราจะติดต่อกลับภายในเวลาทำการ หรือถ้าสะดวกคุยทันที กดปุ่มโทรได้เลย</p>
       </form>
+
+      <div class="quote-out" id="quoteSent" hidden>
+        <h3 style="color:var(--teal);">ส่งคำขอเรียบร้อยแล้ว</h3>
+        <p class="sub">เลขอ้างอิงของคุณคือ <b id="quoteRef" style="font-family:var(--font-mono);"></b> เราได้รับข้อมูลแล้วและจะติดต่อกลับภายในเวลาทำการ เก็บเลขนี้ไว้ใช้อ้างอิงได้</p>
+        <div class="hero-ctas" style="margin-top:4px; margin-bottom:0;">
+          <a class="btn btn-outline" href="tel:0828295758" data-cta="quote-sent">โทรคุยเลย 082-829-5758</a>
+        </div>
+      </div>
+
+      <div class="quote-out" id="quoteOut" hidden>
+        <h3>ส่งผ่านไลน์แทน</h3>
+        <p class="sub">ส่งเข้าระบบไม่สำเร็จ แต่ไม่ต้องกรอกใหม่ครับ ข้อความถูกคัดลอกให้แล้ว กดเปิดแชทไลน์แล้ววางส่งได้เลย</p>
+        <textarea id="quoteMsg" readonly aria-label="ข้อความขอใบเสนอราคา"></textarea>
+        <p class="copied" id="copiedNote" hidden>
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          คัดลอกข้อความแล้ว
+        </p>
+        <div class="hero-ctas" style="margin-top:16px; margin-bottom:0;">
+          <a class="btn btn-amber" id="lineBtn" href="https://lin.ee/sSfryHn" target="_blank" rel="noopener" data-cta="quote-form">เปิดแชทไลน์แล้ววางข้อความ</a>
+          <button type="button" class="btn btn-outline" id="copyBtn">คัดลอกอีกครั้ง</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -447,21 +497,140 @@
 
     var form=document.getElementById('quoteForm');
     if(!form) return;
+
+    // ======================================================
+    //  ใส่ URL ของ Google Apps Script Web App ตรงนี้
+    //  ได้มาตอนกด Deploy (ลงท้ายด้วย /exec)
+    //  ถ้ายังไม่ใส่ ฟอร์มจะใช้วิธีส่งผ่านไลน์แทนโดยอัตโนมัติ
+    // ======================================================
+    var ENDPOINT = '';
+    var FORM_KEY = 'unjaiit-quote-2569';   // ต้องตรงกับ FORM_KEY ในสคริปต์
+
+    var out=document.getElementById('quoteOut');
+    var sent=document.getElementById('quoteSent');
+    var refEl=document.getElementById('quoteRef');
+    var box=document.getElementById('quoteMsg');
+    var note=document.getElementById('copiedNote');
+    var lineBtn=document.getElementById('lineBtn');
+    var copyBtn=document.getElementById('copyBtn');
+    var submitBtn=document.getElementById('quoteSubmit');
+    var loadedAt=Date.now();
+    var isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    function v(id){ var el=document.getElementById(id); return el && el.value ? el.value.trim() : ''; }
+
+    function payload(){
+      return {
+        key: FORM_KEY,
+        elapsed: Date.now()-loadedAt,
+        website: v('q-website'),          // กับดักบอท
+        company: v('q-company'),
+        area: v('q-area'),
+        pc: v('q-pc'),
+        scope: v('q-scope'),
+        contact: v('q-contact'),
+        phone: v('q-phone'),
+        email: v('q-email'),
+        note: v('q-note'),
+        page: location.pathname
+      };
+    }
+
+    function asText(d){
+      var lines=['สนใจขอใบเสนอราคา IT Support รายเดือน'];
+      if(d.company) lines.push('บริษัท: '+d.company);
+      if(d.area)    lines.push('ที่ตั้ง: '+d.area);
+      if(d.pc)      lines.push('จำนวนเครื่อง: '+d.pc);
+      if(d.scope)   lines.push('ขอบเขต: '+d.scope);
+      if(d.contact) lines.push('ผู้ติดต่อ: '+d.contact);
+      if(d.phone)   lines.push('เบอร์: '+d.phone);
+      if(d.email)   lines.push('อีเมล: '+d.email);
+      if(d.note)    lines.push('เพิ่มเติม: '+d.note);
+      return lines.join('\n');
+    }
+
+    function copy(text){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(text).then(function(){return true;},fallback);
+      }
+      return Promise.resolve(fallback());
+      function fallback(){
+        try{
+          var ta=document.createElement('textarea');
+          ta.value=text; ta.setAttribute('readonly','');
+          ta.style.position='fixed'; ta.style.top='-1000px';
+          document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          return true;
+        }catch(e){ return false; }
+      }
+    }
+
+    // ส่งไม่สำเร็จ -> ให้ส่งทางไลน์แทน ไม่ต้องกรอกใหม่
+    function showLineFallback(d){
+      var msg=asText(d);
+      box.value=msg;
+      sent.hidden=true;
+      out.hidden=false;
+      if(isMobile){
+        lineBtn.href='https://line.me/R/oaMessage/@659glguz/?'+encodeURIComponent(msg);
+        lineBtn.textContent='เปิดแชทไลน์พร้อมข้อความ';
+      }
+      Promise.resolve(copy(msg)).then(function(okCopy){ note.hidden=!okCopy; });
+      out.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    function showSent(ref){
+      out.hidden=true;
+      refEl.textContent=ref;
+      sent.hidden=false;
+      sent.scrollIntoView({behavior:'smooth',block:'start'});
+      form.reset();
+    }
+
     form.addEventListener('submit',function(e){
       e.preventDefault();
-      function v(id){ var el=document.getElementById(id); return el && el.value ? el.value.trim() : ''; }
-      var lines=['สนใจขอใบเสนอราคา IT Support รายเดือน'];
-      if(v('q-company')) lines.push('บริษัท: '+v('q-company'));
-      if(v('q-area'))    lines.push('ที่ตั้ง: '+v('q-area'));
-      if(v('q-pc'))      lines.push('จำนวนเครื่อง: '+v('q-pc'));
-      if(v('q-scope'))   lines.push('ขอบเขต: '+v('q-scope'));
-      if(v('q-note'))    lines.push('เพิ่มเติม: '+v('q-note'));
+      var d=payload();
+
+      if(!d.company && !d.phone && !d.email){
+        alert('รบกวนกรอกชื่อบริษัท หรือเบอร์ติดต่อกลับ อย่างน้อยหนึ่งอย่างครับ');
+        return;
+      }
 
       if(window.gtag){
-        window.gtag('event','contact_click',{method:'line',placement:'quote-form',page_path:location.pathname});
+        window.gtag('event','contact_click',{method:'form',placement:'quote-form',page_path:location.pathname});
       }
-      var msg=encodeURIComponent(lines.join('\n'));
-      window.open('https://line.me/R/oaMessage/@659glguz/?'+msg,'_blank','noopener');
+
+      if(!ENDPOINT){ showLineFallback(d); return; }
+
+      submitBtn.disabled=true;
+      var original=submitBtn.textContent;
+      submitBtn.textContent='กำลังส่ง...';
+
+      // ส่งเป็น text/plain เพื่อไม่ให้เบราว์เซอร์ยิง preflight ซึ่ง Apps Script ไม่รองรับ
+      fetch(ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify(d)
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(res && res.ok && res.ref && res.ref.indexOf('Q')===0){ showSent(res.ref); }
+        else if(res && res.ok){ showSent('รับเรื่องแล้ว'); }
+        else { showLineFallback(d); }
+      })
+      .catch(function(){ showLineFallback(d); })
+      .then(function(){
+        submitBtn.disabled=false;
+        submitBtn.textContent=original;
+      });
+    });
+
+    copyBtn.addEventListener('click',function(){
+      Promise.resolve(copy(box.value)).then(function(okCopy){
+        note.hidden=!okCopy;
+        if(!okCopy){ box.select(); }
+      });
     });
   })();
 </script>
