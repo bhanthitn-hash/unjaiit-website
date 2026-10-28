@@ -30,7 +30,7 @@
     var btn = el('button', { type: 'submit', text: 'ส่งข้อมูล ให้ทีมงานติดต่อกลับ' });
     var form = el('form', { class: 'ul-f', novalidate: true, 'aria-label': 'ฟอร์มปรึกษาฟรี' }, [
       err, inp('name', 'ชื่อ', 'text', { autocomplete: 'name' }), inp('phone', 'เบอร์โทร', 'tel', { autocomplete: 'tel', inputmode: 'tel', placeholder: '0812345678' }),
-      el('div', {}, [el('label', { for: 'ul-contact_pref', text: 'ให้ติดต่อกลับทาง' }), pref]), inp('area', 'พื้นที่ / จังหวัด (ถ้ามี)', 'text'),
+      el('div', {}, [el('label', { for: 'ul-contact_pref', text: 'ให้ติดต่อกลับทาง' }), pref]), inp('area', 'พื้นที่ / จังหวัด (ถ้ามี)', 'text'), inp('ref_code', 'รหัสผู้แนะนำ (ถ้ามี)', 'text', { autocomplete: 'off', maxlength: '12', placeholder: 'เช่น AB12CD' }),
       el('div', {}, [el('label', { for: 'ul-message', text: 'รายละเอียด (ไม่บังคับ)' }), msg]), trap,
       el('label', { class: 'ul-c' }, [consent, el('span', {}, ['ฉันรับทราบ ', el('a', { href: PRIVACY, target: '_blank', rel: 'noopener', text: 'นโยบายความเป็นส่วนตัว' }), ' และยินยอมให้ติดต่อกลับ'])]),
       el('label', { class: 'ul-c' }, [mk, el('span', { text: 'ส่งข่าวสารและโปรโมชั่นให้ได้ (ไม่บังคับ)' })]), btn
@@ -49,7 +49,7 @@
       var q = new URLSearchParams(location.search);
       fetch(API, {
         method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_slug: product, name: v('name'), phone: v('phone'), contact_pref: v('contact_pref'), area: v('area'), message: v('message'), website: v('website'), consent_version: 'web', marketing_opt_in: mk.checked, utm: { utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '' }, request_id: requestId })
+        body: JSON.stringify({ product_slug: product, name: v('name'), phone: v('phone'), contact_pref: v('contact_pref'), area: v('area'), ref_code: v('ref_code').trim(), message: v('message'), website: v('website'), consent_version: 'web', marketing_opt_in: mk.checked, utm: { utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '' }, request_id: requestId })
       }).then(function (r) { return r.json(); }).then(function (r) {
         if (!r.ok) throw r.error || {};
         var kids = [el('h3', { text: 'ขอบคุณ ทีมงานจะติดต่อกลับ' })];
